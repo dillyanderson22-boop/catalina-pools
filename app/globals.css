@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@theme {
+  /* Catalina Pools — Editorial Refined adapted for coastal/pool palette
+     Warm sand × deep water blue × pool turquoise */
+  --color-background: #f5efe3;
+  --color-foreground: #0a1f33;
+  --color-accent: #1b9fd9;
+  --color-deep: #0e4f7a;
+  --color-muted: #e5ddd0;
+  --color-border: #d8cfbe;
+
+  /* CUSTOM EASING — use these everywhere instead of ease-in-out */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-inter);
+}
+
+html, body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-feature-settings: 'kern', 'liga', 'calt';
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Lenis */
+html.lenis { height: auto; }
+html.lenis.lenis-smooth { scroll-behavior: auto !important; }
+html.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+html.lenis.lenis-stopped { overflow: hidden; }
+
+.tabular { font-feature-settings: 'tnum'; }
+
+/* Hero fallback — animated deep-water gradient with caustic noise.
+   Used when /hero.jpg isn't available. */
+.hero-bg-fallback {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(27, 159, 217, 0.45) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 80%, rgba(14, 79, 122, 0.65) 0%, transparent 60%),
+    linear-gradient(135deg, #0a1f33 0%, #051624 60%, #0e4f7a 100%);
+  position: relative;
+}
+.hero-bg-fallback::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Caustic shimmer for water sections */
+.water-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.water-shimmer::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);
+  animation: shimmer 12s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes shimmer {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-2%, 2%) rotate(2deg); }
+}
+
+/* Premium hero overlay — bottom-weighted so text stays readable */
+.hero-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(5, 15, 28, 0.35) 0%,
+    rgba(5, 15, 28, 0) 25%,
+    rgba(5, 15, 28, 0) 55%,
+    rgba(5, 15, 28, 0.85) 100%
+  );
+}
+
+/* Selection */
+::selection {
+  background: var(--color-accent);
+  color: white;
+}
+
+/* Editorial type details */
+.serif-italic {
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50;
+}
+
+/* Magnetic cursor */
+.has-magnetic-cursor,
+.has-magnetic-cursor a,
+.has-magnetic-cursor button {
+  cursor: none;
+}
+@media (hover: none), (pointer: coarse) {
+  .has-magnetic-cursor,
+  .has-magnetic-cursor a,
+  .has-magnetic-cursor button {
+    cursor: auto;
+  }
+}
